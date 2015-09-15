@@ -14,7 +14,13 @@ var library = (function(){
 
 		reject : function(list, test) {},
 
-		map : function(list, iterator) {},
+		map : function(list, iterator) {
+			
+    		//for (i=0;i < list.length ;i++){
+     		//return (list[i] + "<br />");
+    		
+			// }
+		},
 
 		pluck : function(list, key) {
 			return this.map(list, function(item){
@@ -47,12 +53,26 @@ var library = (function(){
 		},
 
 		last : function(array, n) {
-			return n === undefined ? array[0] : array.slice(0, n);
-			
+			if (n > array.length){
+				return array;	
+		}else{
+			if (n === undefined){
+				return array[array.length - 1];
+			}else{
+				return array.slice(array.length -n);
+		}
+		}
 		},
-
-		indexOf : function(array, target){},
-
+		indexOf : function(array, target){
+            for(var i = 0, len = array.length; i < len; i++) {
+          //     if (array[i] === 15){ return i;
+			//}else{
+			//	if (array[target]= false){
+			//		return -1
+			//	}
+			//}
+			}
+		},
 		uniq : function(array) {},
 
 		// Advanced Arrays --- Complete Functions Below
