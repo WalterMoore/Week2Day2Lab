@@ -1,10 +1,14 @@
 var library = (function(){
 	return {
 		// Utility --- Complete Functions Below
-		identity : function(val) {},
+		identity : function(val) {
+			return val;
+		},
 
 		// Collections --- Complete Functions Below
-		each : function(list, iterator) {},
+		each : function(list, iterator) {
+			var list = 2//later
+		},
 
 		filter : function(list, test) {},
 
@@ -42,7 +46,10 @@ var library = (function(){
 			return n === undefined ? array[0] : array.slice(0, n);
 		},
 
-		last : function(array, n) {},
+		last : function(array, n) {
+			return n === undefined ? array[0] : array.slice(0, n);
+			
+		},
 
 		indexOf : function(array, target){},
 
@@ -62,7 +69,9 @@ var library = (function(){
 
 		memoize : function(func) {},
 
-		delay : function(func, wait) {}
+		delay : function(func, wait) {
+
+		}
 	}
 })();
 
