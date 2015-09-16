@@ -71,7 +71,9 @@ var library = (function(){
 			
 
 		every : function(list, iterator) {
-			var arr = [];
+			if(iterator===undefined){
+				iterator = this.identity;
+			}
 			var n = list.length;
 			for (var i = 0; i < n; i++){
 				if (!iterator(list[i])){
@@ -84,20 +86,29 @@ var library = (function(){
 
 
 		some : function(list, iterator) {
-			var arr = [];
+			if(iterator===undefined){
+				iterator = library.identity;
+			}
 			var n = list.length;
 			for (var i = 0; i < n; i++){
-				iterator(list[i]);
-			if(iterator(list[i])){
-				arr.push(iterator(list[i]));
+				if(iterator(list[i])/*===true*/){
+					return true;
+				}
 			}
-			}
-			return arr;
+			return false;
 		},
 		
 		
 
-		contains : function(list, target) {},
+		contains : function(list, target) {
+			if(library.indexOf(list,target)=== -1){
+				return false;
+			}
+			return true;
+		},
+		
+		
+		
 
 		// Advanced Collections --- Complete Functions Below
 		shuffle : function(array) {},
@@ -128,24 +139,41 @@ var library = (function(){
 		}
 		},
 		indexOf : function(array, target){
-            for(var i = 0, len = array.length; i < len; i++) {
+			//var arr = [];
+			var n = array.length;
+			for (var i = 0; i < n; i++){
+				if (target===(array[i])){
+					return i;
+				}
+				//arr.push(array[i]);
+			}
+			return -1;
+			//return arr;
           //     if (array[i] === 15){ return i;
 			//}else{
 			//	if (array[target]= false){
 			//		return -1
 			//	}
 			//}
-			}
+			
 		},
 		uniq : function(array) {
-			var arr = [];
-			var n = array.length;
-			for(var i = 0; i < n; i++){
-				if (library.indexOf(arr,array[i])=== -1) {
-					arr.push(array[i]);
-				}
-			return arr;
-			}
+			var arr2 = [];
+            for(var i = 0, len = array.length; i < len; i++){
+                if(library.indexOf(arr2, array[i]) === -1){
+                    arr2.push(array[i])
+                }
+            }
+                return arr2;    
+           
+			//var arr = [];
+			//var n = array.length;
+			//for(var i = 0; i < n; i++){
+			//	if (library.indexOf(arr,array[i])=== -1) {
+			//		arr.push(array[i]);
+			//	}
+			//return arr;
+			//}
 		
 		},
 
