@@ -24,11 +24,35 @@ testFirst();
 //testEach();
 
 
+var myFunc = function(item){
+			if(item.charAt(0)==="a"){
+				return true;
+			}else{
+				return false;
+			}
+}
+
+
+filter(list, test) {
+	test(list[i]);
+}
+
+
+
+filter(fruits, myFunc);
 
 function testFilter(){
 	var fruits =['apple','orange','tomato','grape'];
 		console.log(fruits);
-		console.log("filter = " + _.filter(fruits));
+		console.log("filter = " + _.filter(fruits, function(item){
+			if(item.charAt(0)==="a"){
+				return true;
+			}else{
+				return false;
+			}
+		}));
+		
+		
 	//if(fruits = 'tomato'){
 		//return true;
 	//}else{
@@ -36,6 +60,7 @@ function testFilter(){
 	//}
 }
 testFilter();
+
 
 
 function testReject(){

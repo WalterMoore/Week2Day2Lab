@@ -10,12 +10,41 @@ var library = (function(){
 			var list = 2//later
 		},
 
-		filter : function(list, test) {},
+		filter : function(list, test) {
+			var arr = [];
+			var n = list.length;
+			for (var i = 0; i < n; i++){
+			test(list[i]);
+			if(test(list[i])){
+				arr.push(list[i]);
+			}
+			}
+			return arr; 
+		},
 
-		reject : function(list, test) {},
+		reject : function(list, test) {
+			var arr = [];
+			var n = list.length;
+			for (var i = 0; i < n; i++){
+			test(list[i]);
+			if(!test(list[i])){
+				arr.push(list[i]);
+			}
+			}
+			return arr;
+		},
 
 		map : function(list, iterator) {
-			
+			var arr = [];
+			var n = list.length;
+			for (var i = 0; i < n; i++){
+            iterator(list[i]);
+			arr.push(iterator(list[i]));
+			//--the below also works instead of the one line above:
+			//var temp = iterator(list[i]);
+			//	arr.push(temp);
+			}
+			return arr;
     		//for (i=0;i < list.length ;i++){
      		//return (list[i] + "<br />");
     		
