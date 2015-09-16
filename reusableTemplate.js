@@ -56,11 +56,46 @@ var library = (function(){
 				return item[key];
 			});
 		},
-		reduce : function(list, iterator, accumulator) {},
+		
+		reduce : function(list, iterator, accumulator) {
+			//var arr = [];
+			if(accumulator === undefined){
+				accumulator = list[0];
+			}
+			var n = list.length;
+			for (var i = 0; i < n; i++){
+				accumulator = iterator(list[i],accumulator);
+			}
+			return accumulator;
+		},
+			
 
-		every : function(list, iterator) {},
+		every : function(list, iterator) {
+			var arr = [];
+			var n = list.length;
+			for (var i = 0; i < n; i++){
+				if (!iterator(list[i])){
+					return false;
+				}
+			}
+			return true;
+		},
 
-		some : function(list, iterator) {},
+
+
+		some : function(list, iterator) {
+			var arr = [];
+			var n = list.length;
+			for (var i = 0; i < n; i++){
+				iterator(list[i]);
+			if(iterator(list[i])){
+				arr.push(iterator(list[i]));
+			}
+			}
+			return arr;
+		},
+		
+		
 
 		contains : function(list, target) {},
 
@@ -102,7 +137,17 @@ var library = (function(){
 			//}
 			}
 		},
-		uniq : function(array) {},
+		uniq : function(array) {
+			var arr = [];
+			var n = array.length;
+			for(var i = 0; i < n; i++){
+				if (library.indexOf(arr,array[i])=== -1) {
+					arr.push(array[i]);
+				}
+			return arr;
+			}
+		
+		},
 
 		// Advanced Arrays --- Complete Functions Below
 		zip : function() {},
