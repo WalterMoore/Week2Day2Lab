@@ -3,8 +3,16 @@
 //_.each();
 
 
-testLast: (function(){
+function testLast(){
 	var fruits =['apple','orange','tomato','grape'];
-	return _.last();
-	console.log(_.last);
-});
+	console.log(_.last(fruits));
+}
+
+testLast();
+
+function testFirst(){
+	var fruits =['apple','orange','tomato','grape'];
+	console.log(_.first(fruits));
+}
+
+testFirst();
