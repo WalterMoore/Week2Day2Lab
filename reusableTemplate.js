@@ -123,7 +123,7 @@ var library = (function(){
 		
 
 		// Advanced Collections --- Complete Functions Below
-		shuffle : function(array) {
+		shuffle : function(array) {//why doesn't this work?
 					    var counter = array.length, temp, index;		
 			var arr = [];
 			var n = array.length;
@@ -138,15 +138,30 @@ var library = (function(){
 		},
 
 
+		invoke : function(list, methodName, args) {//started
+			var arr = [];
+			var n = list.length;
+			for (var i = 0; i < n; i ++){}
+		},
 
-		invoke : function(list, methodName, args) {},
-
-		sortBy : function(list, iterator) {},
+		sortBy : function(list, iterator) {//started
+			var arr = [];
+			var n = list.length;
+			for (var i = 0; i < n; i++){}
+		},
 
 		// Objects --- Complete Functions Below
-		extend : function(obj) {},
+		extend : function(obj) {//make a place to store the new obj
+		
+		},
+			
+			
 
-		defaults : function(obj) {},
+		defaults : function(obj) {//make a way to fill in undefined object
+			
+			
+		},
+
 
 		// Arrays --- Complete Functions Below
 		first : function(array, n) {
