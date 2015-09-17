@@ -101,17 +101,43 @@ var library = (function(){
 		
 
 		contains : function(list, target) {
+			//if(list=[]){
 			if(library.indexOf(list,target)=== -1){
 				return false;
 			}
 			return true;
+			//}else{
+			//	var n = list.length;
+			//	for(var i = 0; i < n; i++){
+			//		if (target===(list[i])){
+			//			return i;
+			//		}else{
+			//			return -1;
+			//		}
+					
+			//s	}
+			//}
 		},
 		
 		
 		
 
 		// Advanced Collections --- Complete Functions Below
-		shuffle : function(array) {},
+		shuffle : function(array) {
+					    var counter = array.length, temp, index;		
+			var arr = [];
+			var n = array.length;
+			for(var i = 0; i < n; i ++){
+				var shuffled = i + 1;
+				if (shuffled = n){
+					shuffled = shuffled - n;
+				}
+				arr.push(array[i]);
+			}
+		    return array;
+		},
+
+
 
 		invoke : function(list, methodName, args) {},
 
