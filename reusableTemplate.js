@@ -7,7 +7,15 @@ var library = (function(){
 
 		// Collections --- Complete Functions Below
 		each : function(list, iterator) {
-			var list = 2//later
+			if(list.constructor === Array){
+				for(var i = 0; i < list.length; i++){
+					iterator(list[i],i,list);
+				}
+			}else{
+				for(var key in list){
+					iterator(list[key],key,list);
+				}
+			}
 		},
 
 		filter : function(list, test) {
@@ -100,31 +108,50 @@ var library = (function(){
 		
 		
 
-		contains : function(list, target) {
-			//if(list=[]){
-			if(library.indexOf(list,target)=== -1){
-				return false;
-			}
-			return true;
-			//}else{
-			//	var n = list.length;
-			//	for(var i = 0; i < n; i++){
-			//		if (target===(list[i])){
-			//			return i;
-			//		}else{
-			//			return -1;
-			//		}
-					
-			//s	}
-			//}
-		},
+		/*contains : function(list, target) {
+			return this.reduce(list, function(wasFound,item){
+				if (wasFound){
+					return true;
+				}else{
+					var n = list.length;
+					for(var i = 0; i < n; i++){
+						if (target===(list[i])){
+							return i;
+						}else{
+							return -1;
+						}
+					}
+				}
+			});
+		},*/
 		
-		
+	contains: function(list, target) {
+        return this.reduce(list, function(wasFound, item) {
+            if (wasFound) {
+              return true;
+            }
+            return item === target;
+          }, false);
+      },
 		
 
 		// Advanced Collections --- Complete Functions Below
-		shuffle : function(array) {//why doesn't this work?
-					    var counter = array.length, temp, index;		
+		shuffle : function(array) {
+			var copy = array.slice();
+			for (var i = 0; i < copy.length - 1; i++){
+				for (var j = 1; j < copy.length; j++){
+					if(Math.random() < 0.5){
+						var temp = copy[i];
+						copy[i] = copy[j];
+						copy[j] = temp;
+					}
+				}
+			}
+			return copy;
+		},
+		
+			//why doesn't this work?
+			/*var counter = array.length, temp, index;		
 			var arr = [];
 			var n = array.length;
 			for(var i = 0; i < n; i ++){
@@ -135,31 +162,63 @@ var library = (function(){
 				arr.push(array[i]);
 			}
 		    return array;
-		},
+		},*/
+		
 
 
 		invoke : function(list, methodName, args) {//started
-			var arr = [];
-			var n = list.length;
-			for (var i = 0; i < n; i ++){}
+			return this.map(list, function(item){
+				if(typeof methodName == 'function'){
+					return methodName.apply(item, args);
+				}else{
+					return item[methodName].apply(item, args);
+				}
+			});
 		},
 
 		sortBy : function(list, iterator) {//started
-			var arr = [];
-			var n = list.length;
-			for (var i = 0; i < n; i++){}
+			if (typeof iterator !== 'function'){
+				var str = iterator;
+				iterator = function(item) { return item[str];};
+			}
+			var res = [];
+			this.each(list, function(item) { res.push(item); });
+			
+			for (var i = 0; i < res.length - 1; i++) {
+				for (var j = i + 1; j < res.length; j++) {
+					if (iterator(res[i]) > iterator(res[j]) || !res[i]) {
+						var temp = res[i];
+						res[i] = res[j];
+						res[j] = temp;
+					}
+				}
+			}
+			return res;
 		},
 
 		// Objects --- Complete Functions Below
 		extend : function(obj) {//make a place to store the new obj
-		
+			var args = Array.prototype.slice.call(arguments, 1);
+			this.each(args, function(property){
+				for (var key in property) {
+					obj[key] = property[key];
+				}
+			});
+			return obj;
 		},
 			
 			
-
 		defaults : function(obj) {//make a way to fill in undefined object
+			var args = Array.prototype.slice.call(arguments, 1);
 			
-			
+			this.each(args, function(property){
+				for(var key in property){
+					if(!obj.hasOwnProperty(key)){
+						obj[key] = property[key];
+					}
+				}
+			});
+			return obj;
 		},
 
 
@@ -171,24 +230,33 @@ var library = (function(){
 		last : function(array, n) {
 			if (n > array.length){
 				return array;	
-		}else{
-			if (n === undefined){
-				return array[array.length - 1];
 			}else{
-				return array.slice(array.length -n);
-		}
-		}
+				if (n === undefined){
+					return array[array.length - 1];
+				}else{
+					return array.slice(array.length -n);
+				}
+			}
 		},
+		
 		indexOf : function(array, target){
+			var result = -1;
+			this.each(array, function(item, index) {
+				if (item === target && result === -1) {
+					result = index;
+				}
+			});
+			return result;
+		},
 			//var arr = [];
-			var n = array.length;
+			/*var n = array.length;
 			for (var i = 0; i < n; i++){
 				if (target===(array[i])){
 					return i;
 				}
 				//arr.push(array[i]);
 			}
-			return -1;
+			return -1;*/
 			//return arr;
           //     if (array[i] === 15){ return i;
 			//}else{
@@ -197,7 +265,7 @@ var library = (function(){
 			//	}
 			//}
 			
-		},
+		
 		uniq : function(array) {
 			var arr2 = [];
             for(var i = 0, len = array.length; i < len; i++){
@@ -219,7 +287,29 @@ var library = (function(){
 		},
 
 		// Advanced Arrays --- Complete Functions Below
-		zip : function() {},
+		zip : function() {
+			var arrays = Array.prototype.slice.call(arguments);
+			var longest = this.sortBy(arrays, 'length')[arrays.length - 1].length;
+			var zipped = [];
+			for (var i = 0; i < longest; i++) {
+				var zipPart = [];
+				this.each(arrays, function(arr){
+					if (i >= arr.length) zipPart.push(undefined);
+					else zipPart.push(arr[i]);
+				});
+				zipped.push(zipPart);
+			}
+			return zipped;
+		},
+			/*var arr1 = [];
+			var arr2 = [];
+			if(arr1.length > arr2.length){
+				var n = arr1.length;
+			}else{
+				var n = arr2.length;
+			}
+			for (var i = 0; i < n; i++){}
+		},*/
 
 		flatten : function(nestedArray, result) {},
 
