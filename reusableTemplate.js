@@ -311,19 +311,72 @@ var library = (function(){
 			for (var i = 0; i < n; i++){}
 		},*/
 
-		flatten : function(nestedArray, result) {},
+		flatten : function(nestedArray, result) {
+			var self = this;
+			result = result || [];
+			this.each(nestedArray, function(item) {
+				if (!Array.isArray(item)) result.push(item);
+				else self.flatten(item, result);
+			});
+			return result;
+		},
 
-		intersection : function() {},
+		intersection : function() {
+			var over = [], args = Array.prototype.slice.call(arguments, 1);
+			var self = this;
+			
+			self.each(arguments[0], function(i){
+				var cross = true;
+				self.each(args, function(j) {
+					if (self.indexOf(j, i) < 0) cross = false;
+				});
+				if (cross) over.push(i);
+			});
+			return over;
+		},
 
-		difference : function(array) {},
+		difference : function(array) {
+			var arrays = Array.prototype.slice.call(arguments, 1);
+			var unique = [];
+			var self = this;
+			self.each(array, function(i) {
+				var selfish = true;
+				self.each(arrays, function(j) {
+					if (self.indexOf(j,i) >= 0) selfish = false;
+				});
+				if (selfish) unique.push(i);
+			});
+			return unique;
+		},
 
 		// Functions --- Complete Functions Below
-		once : function(func) {},
+		once : function(func) {
+			var alreadyCalled = false;
+			var result;
+			return function() {
+				if (!alreadyCalled) {
+					result = func.apply(this, arguments);
+					alreadyCalled = true;
+				}
+				return result;
+			};
+		},
 
-		memoize : function(func) {},
+		memoize : function(func) {
+			var storage = {};
+			return function() {
+				if (!storage[arguments[0]]) {
+					storage[arguments[0]] = func.apply(this, arguments);
+				}
+				return storage[arguments[0]];
+			};
+		},
 
 		delay : function(func, wait) {
-
+			var args = Array.prototype.slice.call(arguments, 2);
+			setTimeout(function() {
+				func.apply(this, args);
+			}, wait);
 		}
 	}
 })();
